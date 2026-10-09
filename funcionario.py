@@ -24,20 +24,19 @@ class Funcionario(Pessoa):
         self._idade = valor    
 
     def mostrar_informacoes(self):
-        print(f"Funcionário: {self.nome}\nIdade: {self.idade}\nSalário: {self.salario}")
+        print(f"Funcionário: {self.nome}")
 
 class Gerente(Funcionario):
-    def __init__(self, nome, idade, salario):
+    def __init__(self, nome, idade, salario, bonus):
         super().__init__(nome, idade, salario)
-        self.bonus = 500
+        self.bonus = bonus
 
     def mostrar_informacoes(self):
-        print(f"\nGerente: {self.nome} \nIdade: {self.idade} \nSalário: {self.salario} \n|Bônus: {self.bonus}")
+        print(f"Gerente: {self.nome} \nIdade: {self.idade} \nSalário + Bônus: {self.salario + self.bonus}")
 
     def gerar_relatorio(self, funcionarios):
         for funcionario in funcionarios:
             funcionario.mostrar_informacoes()
-
 
 class Recepcionista(Funcionario):
     def __init__(self, nome, id_func, idade, salario, turno):
@@ -47,7 +46,7 @@ class Recepcionista(Funcionario):
 
     @property
     def turno(self):
-        return self._turno
+        return self.turno
 
     @turno.setter
     def turno(self, turno):
@@ -57,7 +56,7 @@ class Recepcionista(Funcionario):
             print("Turno inválido!")
 
     def mostrar_informacoes(self):
-        print(f"\nRecepcionista: {self.nome}\nIdade: {self.idade}\nID: {self.id_func}\nTurno: {self.turno}")
+        print(f"Recepcionista: {self.nome}")
 
     def registrar_hospede(self, hospede, lista_hospedes):
         lista_hospedes.append(hospede)
@@ -81,7 +80,7 @@ class TecnicoManutencao(Funcionario):
         self._especialidade = especialidade
 
     def mostrar_informacoes(self):
-        print(f"\nTécnico: {self.nome}\nIdade: {self.idade}\nSalário: {self.salario}\nEspecialidade: {self.especialidade}")
+        print(f"Técnico: {self.nome}")
 
     def registrar_reparo(self, descricao):
         print(f"Reparo registrado: {descricao}")

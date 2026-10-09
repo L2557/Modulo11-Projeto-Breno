@@ -13,6 +13,11 @@ def criar_quarto():
     print("\nCRIAR QUARTO")
 
     numero = int(input("Número do quarto: "))
+    for quarto in quartos:
+        if quarto.numero == numero:
+            print("Já existe um quarto com esse número")
+            return
+
     print("1 - Simples\n2 - Luxo")
     tipo = int(input("Escolha o tipo: "))
     preco = float(input("Preço por dia: "))
@@ -49,32 +54,42 @@ def criar_hospede():
     print("\nREGISTAR HÓSPEDE")
 
     nome = input("Nome: ")
-    idade = input("Idade: ")
 
+    idade = input("Idade: ")
     if idade.isdigit() == False:
         print("Idade inválida")
         return
-
     idade = int(idade)
-
     if idade <= 0:
         print("Idade inválida")
         return
-        
     
-    dias_estadia = int(input("Dias de estadia: "))
+    dias_estadia = input("Dias de estadia: ")
+    if dias_estadia.isdigit() == False:
+        print("Dias de estadia inválidos")
+        return
+    dias_estadia = int(dias_estadia)
+    if dias_estadia <= 0:
+        print("Dias de estadia inválidos")
+        return
 
     if len(quartos) == 0:
         print("Não existem quartos")
         return
 
     print("\nQuartos:")
-
     for quarto in quartos:
         quarto.mostrar_informacoes()
         print("-" * 25)
 
-    numero = int(input("Número do quarto: "))
+    numero = input("Número do quarto: ")
+    if numero.isdigit() == False:
+        print("Número do quarto inválido")
+        return
+    numero = int(numero)
+    if len(quartos) == 0:
+        print("Não existem quartos")
+        return
 
     quarto_escolhido = None
 
@@ -96,7 +111,7 @@ def criar_hospede():
 
 
 def listar_hospedes():
-    print("\nHÓSPEDES ")
+    print("\nHÓSPEDES")
 
     if len(hospedes) == 0:
         print("Não existem hóspedes registados")
@@ -124,13 +139,15 @@ def fazer_checkout():
         print("Hóspede não encontrado")
         return
 
-    print(f"Quarto Limpo")
+    print("Valor da conta:", hospede_encontrado.calcular_conta(), "€")
     hospede_encontrado.checkout()
+
+    hospedes.remove(hospede_encontrado)
+    print(f"Quarto Limpo")
 
 
 def criar_funcionario():
-    print("\nCRIAR FUNCIONÁRIO ")
-
+    print("\nCRIAR FUNCIONÁRIO")
     print("1 - Gerente\n2 - Recepcionista\n3 - Técnico de Manutenção\n4 - Técnico de Recepção")
 
     opcao = int(input("Escolha: "))
@@ -156,11 +173,34 @@ def criar_funcionario():
             print("Salário inválido")
             return
 
-        funcionario = Gerente(nome,idade,salario)
+        bonus = input("Bônus: ")
+        if bonus.isdigit() == False:
+            print("Bônus inválido")
+            return
+        bonus = float(bonus)
+        if bonus <= 0:
+            print("Bônus inválido")
+            return
+
+        funcionario = Gerente(nome,idade,salario, bonus)
 
     elif opcao == 2:
         nome = input("Nome: ")
-        id_func = int(input("ID do funcionário: "))
+
+        id_func = input("ID do funcionário: ")
+        if id_func.isdigit() == False:
+            print("ID inválido")
+            return
+        id_func = int(id_func)
+        if id_func <= 0:
+            print("ID inválido")
+            return
+        
+        for funcionario in funcionarios:
+            if isinstance(funcionario, Recepcionista) or isinstance(funcionario, TecnicoRecepcao):
+                if funcionario.id_func == id_func:
+                    print("Já existe um funcionário com esse ID!")
+                    return
 
         idade = input("Idade: ")
         if idade.isdigit() == False:
@@ -173,7 +213,7 @@ def criar_funcionario():
         
         salario = input("Salário: ")
         if salario.isdigit() == False:
-            print("Salário inválida")
+            print("Salário inválido")
             return
         salario = float(salario)
         if salario <= 0:
@@ -197,7 +237,7 @@ def criar_funcionario():
         
         salario = input("Salário: ")
         if salario.isdigit() == False:
-            print("Salário inválida")
+            print("Salário inválido")
             return
         salario = float(salario)
         if salario <= 0:
@@ -209,11 +249,25 @@ def criar_funcionario():
 
     elif opcao == 4:
         nome = input("Nome: ")
-        id_func = int(input("ID do funcionário: "))
+
+        id_func = input("ID do funcionário: ")
+        if id_func.isdigit() == False:
+            print("ID inválido")
+            return
+        id_func = int(id_func)
+        if id_func <= 0:
+            print("ID inválido")
+            return
+        
+        for funcionario in funcionarios:
+            if isinstance(funcionario, Recepcionista) or isinstance(funcionario, TecnicoRecepcao):
+                if funcionario.id_func == id_func:
+                    print("Já existe um funcionário com esse ID!")
+                    return
         
         salario = input("Salário: ")
         if salario.isdigit() == False:
-            print("Salário inválida")
+            print("Salário inválido")
             return
         salario = float(salario)
         if salario <= 0:
@@ -231,8 +285,8 @@ def criar_funcionario():
     funcionarios.append(funcionario)
 
 
-def listar_funcionarios():
-    print("\n FUNCIONÁRIOS ")
+def relatorio():
+    print("\nRELATÓRIO:\n")
 
     if len(funcionarios) == 0:
         print("Não existem funcionários registados")
@@ -243,27 +297,13 @@ def listar_funcionarios():
         print("-" * 25)
 
 
-def gerar_relatorio():
-    print("\nRELATÓRIO ")
-
-    for funcionario in funcionarios:
-
-        if isinstance(funcionario, Gerente):
-            funcionario.gerar_relatorio(funcionarios)
-            return
-
-    print("Não existe nenhum gerente")
-
-
 def registrar_reparo():
     print("\nREGISTAR REPARO ")
 
     descricao = input("Descrição do reparo: ")
-
     tecnicos = []
 
     for funcionario in funcionarios:
-
         if isinstance(funcionario, TecnicoManutencao):
             tecnicos.append(funcionario)
 
@@ -282,11 +322,10 @@ def registrar_reparo():
 
     tecnicos[escolha - 1].registrar_reparo(descricao)
 
+###########################################################
 
-def menu():
-
-    while True:
-        print("\n===== SISTEMA DE HOTEL =====")
+while True:
+        print("\n===== HOTEL =====")
 
         print("1 - Criar quarto")
         print("2 - Listar quartos")
@@ -294,45 +333,29 @@ def menu():
         print("4 - Listar hóspedes")
         print("5 - Fazer checkout")
         print("6 - Criar funcionário")
-        print("7 - Listar funcionários")
-        print("8 - Gerar relatório")
-        print("9 - Registar reparo")
+        print("7 - Imprimir relatório")
+        print("8 - Registar reparo")
         print("0 - Sair")
 
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
             criar_quarto()
-
         elif opcao == "2":
             listar_quartos()
-
         elif opcao == "3":
             criar_hospede()
-
         elif opcao == "4":
             listar_hospedes()
-
         elif opcao == "5":
             fazer_checkout()
-
         elif opcao == "6":
             criar_funcionario()
-
         elif opcao == "7":
-            listar_funcionarios()
-
+            relatorio()
         elif opcao == "8":
-            gerar_relatorio()
-
-        elif opcao == "9":
             registrar_reparo()
-
         elif opcao == "0":
             break
-
         else:
             print("Opção inválida!")
-
-if __name__ == "__main__":
-    menu()

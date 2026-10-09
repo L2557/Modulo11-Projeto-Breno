@@ -25,8 +25,6 @@ class Hospede(Pessoa):
 
     @idade.setter
     def idade(self, valor):
-        if valor < 0:
-            raise ValueError("A idade não pode ser negativa!")
         self._idade = valor
 
     @property
@@ -48,9 +46,8 @@ class Hospede(Pessoa):
         return self.dias_estadia * self.quarto.preco_diaria
 
     def mostrar_informacoes(self):
-        print(f"Nome: {self.nome}\nIdade: {self.idade}\nQuarto: {self.quarto.numero}")
+            print(f"Nome: {self.nome}\nIdade: {self.idade}\nQuarto: {self.quarto.numero}")
 
     def checkout(self):
         self.quarto.ocupado = False
-        print(f"Checkout realizado para {self.nome}")
         self._quarto = None
