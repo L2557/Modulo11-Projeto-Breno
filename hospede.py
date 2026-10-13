@@ -3,7 +3,7 @@ from pessoa import Pessoa
 
 class Hospede(Pessoa):
 
-    def __init__(self, nome, idade, dias_estadia, quarto=None)
+    def __init__(self, nome, idade, dias_estadia, quarto=None):
         super().__init__(nome, idade)
         self.dias_estadia = dias_estadia
         self._quarto = None
