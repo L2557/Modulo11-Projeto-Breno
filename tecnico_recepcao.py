@@ -2,10 +2,8 @@ from funcionario import Recepcionista, TecnicoManutencao
 
 class TecnicoRecepcao(Recepcionista, TecnicoManutencao):
     def __init__(self, nome, id_fun, salario, setor, especialidade):
-        self.nome = nome
-        self.salario = salario
-        self.especialidade = especialidade
-        self.id_fun = id_fun
+        Recepcionista().__init__(nome, id_fun, salario)
+        TecnicoManutencao().__init__(especialidade)
         self.setor = setor
 
     def registrar_hospede(self, nome_hospede):
